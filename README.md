@@ -1,3 +1,5 @@
+Reference : https://github.com/kunxin-chor/tgc12-mysql/blob/master/queries.sql
+
 mysql -u root 
 
 show databases //display all databases in the server
