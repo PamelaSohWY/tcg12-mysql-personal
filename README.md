@@ -1,6 +1,137 @@
+mysql -u root 
+
+show databases //display all databases in the server
+
+create database employee_feedback;
+
+use employee_feedback;
+
+create table students(
+student_id int unsigned auto_increment primary key,
+first_name varchar(200) not null,
+last_name varchar(200) not null,
+bio text
+) engine = innodb;
+//int can hold 4B 
+// <name ofcolumn> <data type> <autoincrease by one> <primary key>
+// one column
+
+show tables
+
+insert into students (first_name, last_name, bio) 
+values ("Ah Kow", "Tan", "Year one student");
+//insert into <table name>(<columns>) (<values>)
+
+select * from students;
+
+insert into students (first_name, last_name) values ("Mary", "Su");
+
+insert into students (first_name, last_name, bio) values 
+    ("John", "Doe", "Unknown person"),
+    ("Alice", "Tay", null),
+    ("Jane", "Smith", "Unknown person from a different era");
+
+Exercise
+
+create database library;
+
+create table courses(
+    course_id int unsigned auto_increment primary key, 
+    title varchar(200) not null,
+    description varchar(200) not null
+) engine=innodb;
+
+insert into courses (title, description) values
+("Management","Managing people, money and resources"),
+("Marketing", "Making your brand known"),
+("HR", "Managing people capital"); 
+
+
+create table professors (
+    professor_id int unsigned auto_increment primary key,
+    first_name varchar(200) not null,
+    last_name varchar(200) not null,
+    salutation varchar(200) not null) engine=innodb;
+
+    insert into professors (first_name, last_name, salutation) values
+("Peter", "Ang", "Dr"),
+("Paul", "Lee", "Asst Prof"),
+("Sam","Ang", "Mr")
+;
+
+create table feedback_statuses (
+    feedback_status_id int unsigned auto_increment primary key, 
+    text text not null
+) engine = innodb;
+
+Insert into feedback_statuses (text)
+values ('Pending'),
+('acknowledged'),
+('resolved'),
+('escalated');
+
+//foreign key 
+create table modules (
+  module_id int unsigned auto_increment primary key,
+  name varchar(200) not null,
+  description tinytext not null,
+  professor_id int unsigned not null, 
+  foreign key(professor_id) references professors(professor_id)) engine=innodb;
+
+
+//Invalid example
+Insert into modules (name, description, professor_id) values
+('Interviews 101', 'How to conduct interviews', 2);
+
+//Valid example, bec there is professor_id with 1
+Insert into modules (name, description, professor_id) values
+('Interviews 101', 'How to conduct interviews', 1);
+
+//Delete 
+//only delete student whose id is 4
+delete from students where student_id =4;
+
+we cannot delete row where there are other rows dependent on it
+eg. delete from professors where professor_id = 1;
+
+//Create classes 
+//delete cascade is permanent // it will affect audit trail 
+create table classes (
+    class_id int unsigned auto_increment primary key, 
+    semester varchar(10) not null, 
+    course_id int unsigned not null, 
+    foreign key(course_id) references courses(course_id) on delete cascade, 
+    module_id int unsigned not null, 
+    foreign key(module_id) references modules (module_id) on delete cascade
+)engine = innodb;
+
+
+If your project requires foreign key, then you should use SQl. 
+
+Note: internal counter will still go up, even if it is an error 
+
+insert into classes (semester, course_id, module_id) values ("AY2021",3,2);
+
+//rename columns 
+alter table classes rename column semester to semester code;
+
+//alter table classes add column new_of_column unsigned int
+
+//Update a Row
+update students set bio = "stays in AMK" where student_is =2;
+
+
+
+
+
+
+)engine = innodb;
+// compulsory = not null
+
+use library;
 ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
-Welcome USER_NAME,
+Welcome PamelaSohWY,
 
 This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. You can safely delete this README.md file, or change it for your own project. Please do read it at least once, though! It contains some important information about Gitpod and the extensions we use.
 
