@@ -1,0 +1,33 @@
+Chinook 
+Q5 
+SELECT Track.Name from Track where GenreId in 
+SELECT GenreId from Genre where Name = "Easy Listening"
+
+Q8 
+SELECT BillingCountry, avg(total) from Invoice
+group by(Billing Country) 
+having avg(total) > (select avg(total) from Invoice) 
+
+Q9 
+Select Invoice.CustomerId, avg(Total) from Invoice
+JOIN customer on Invoice.CustomerId = Customer.CustomerId
+where Customer.Country = "Germany"
+group by Invoice.CustomerId 
+Having sum(total)
+
+Q10 
+SELECT TrackId 
+
+SELECT Album.AlbumId, Album.Title, AVG(Track.Milliseconds)/60000 as "Avg.length in min"
+FROM Album JOIN Track 
+on Album.AlbumId = Track.AlbumId
+join Genre 
+on Track.GenreId = Genre.Genreid
+where Genre.Name ="Jazz"
+group by Album.AlbumId, Album.Title
+
+Note it is possible to change join to query 
+
+
+
+
