@@ -1,0 +1,47 @@
+{{#extends 'base'}}
+
+{{#block 'content'}}
+<h1>Customers</h1>
+<!-- since we are searching the database, i.e
+retriving information, we are adding any new data
+, hence we should use GET -->
+<form method="GET">
+    <div>
+        <label class="form-label">Name</label>
+    <input type="text" value="{{name_search}}" placeholder="Name search" class="form-control" name="name_search"/>
+     </div>
+<div>
+        <label class="form-label">Email</label>
+    <input type="text" value="{{email_search}}" placeholder="Email search" class="form-control" name="email_search"/>
+     </div>
+
+    <input type="submit" value="Search"  class="btn btn-primary my-3"/>
+</form>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Customer ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Active</th>
+        </tr>
+    </thead>
+    
+    {{#each customer}}
+    <tr>
+        <td>{{this.customer_id}}</td>
+        <td>{{this.first_name}}</td>
+        <td>{{this.last_name}}</td>
+        <td>{{this.email}}</td>
+        <td>{{this.active}}</td>
+    </tr>
+    </tr>
+    {{/each}}
+</table>
+
+{{/block}}
+
+{{/extends}}
