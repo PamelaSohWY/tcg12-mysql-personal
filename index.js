@@ -46,7 +46,21 @@ async function main() {
     })
     //go create base.hbs in layouts 
     //create actors in views 
-}
+
+
+    //create a route to get all city data from city table in Sakila 
+// then create hbs 
+   app.get('/city', async(req,res)=>{
+    //    res.send ("City");
+    let [city] = await connection.execute ("select * from city");
+        res.render('city',{
+            'city':city
+        })
+
+   })//end of app.get
+}//end of main function
+
+//Make sure all routes are in the main function
 
 main();
 
