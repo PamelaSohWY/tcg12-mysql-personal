@@ -1,0 +1,25 @@
+{
+  "name": "tcg12-mysql-personal",
+  "version": "1.0.0",
+  "description": "Reference : https://github.com/kunxin-chor/tgc12-mysql/blob/master/queries.sql",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PamelaSohWY/tcg12-mysql-personal.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PamelaSohWY/tcg12-mysql-personal/issues"
+  },
+  "homepage": "https://github.com/PamelaSohWY/tcg12-mysql-personal#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "hbs": "^4.1.2",
+    "mysql2": "^2.2.5",
+    "wax-on": "^1.2.2"
+  }
+}
