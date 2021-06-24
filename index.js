@@ -70,6 +70,14 @@ async function main() {
 
    })//end of app.get
 
+   app.get('/country', async (req, res) => {
+     //res.send("Hello world");
+     let [country] = await connection.execute("select * from country"); //using sql query // just to show infor in the browser // but to be readable need to create views hbs/ layout
+    res.render('country', {
+        'country': country
+     }) 
+})
+
 
 // search for actor
     app.get('/search', async(req,res)=>{
@@ -142,6 +150,108 @@ async function main() {
             'email_search': req.query.email_search
         })
     })
+
+
+   //Create Actor 
+   app.get('/actor/create', async (req,res)=>{
+    res.render('create_actor');
+})
+
+app.post('/actor/create', async(req,res)=>{
+    let firstName = req.body.firstName;
+    let lastName = req.body.lastName;
+    let query = "insert into actor (first_name, last_name) values (?, ?);"
+    let bindings = [firstName, lastName]
+
+    await connection.execute(query, bindings);
+    res.redirect('/') //results should be redirected 
+})
+
+app.get('/country/create', async(req,res)=>{
+    res.render('create_country'); //name in consistent manner 
+}) //ok
+
+
+
+app.post('/country/create', async(req,res)=>{
+    
+    let country = req.body.country; 
+    let query = "insert into country (country) values(?);"
+    let bindings =[country]
+
+    await connection.execute(query, bindings);
+    res.redirect('/country')
+    res.send("new country has been added")
+})
+
+
+//Update And Actor 
+//One route to show form 
+//One route to edit form 
+//One route to show country 
+// app.get('/actor/:actor_id/update', async(req,res)=>{
+//     //fetch the actor
+// let query = select 
+//     //always check the sql code in sql terminal first 
+// })
+
+
+//Update And Country 
+//One route to show form 
+//One route to edit form 
+//One route to show country 
+app.get('/country/:country_id/update', async(req,res)=>{
+    //fetch the country
+let query = "select * from country where country_id=?"; 
+
+//country will always be an array regardless of number of results 
+let [country]= await connection.execute(query,[req.params.country_id]);
+
+//extract out the first element from the results 
+let targetCountry = country[0];
+
+res.render ('update_country',{
+    'country':targetCountry
+})
+
+    //always check the sql code in sql terminal first 
+})// end of app.get update // ok checked 
+//form is up
+
+
+//this is for submit button
+app.post('/country/:country_id/update', async(req,res)=>{
+    //destructuring used //let X= req.body.x 
+    //let country=req.body.country;
+    let query = `update country set country=? where country_id =?`;
+    let bindings = [req.body.country, req.params.country_id]; //check in update_country that the variable name is same 
+    console.log(bindings);
+    await connection.execute(query, bindings);
+    res.redirect('/country');
+})
+
+//DELETE AN ACTOR
+app.get('/actor/:actor_id/delete', async(req,res)=>{
+    let [actor] = await connection.execute(
+        "select * from actor where actor_id = ?",
+        [ req.params.actor_id]
+    )
+    let targetActor = actor[0];
+    res.render('delete_actor',{
+        'actor': targetActor
+    })
+})
+
+app.post('/actor/:actor_id/delete', async(req,res)=>{
+    let query = " delete from actor where actor_id = ?"
+    await connection.execute(query, [ req.params.actor_id]);
+    res.redirect('/')
+})
+
+// This for delete button 
+
+
+
 
 }//end of main function
 
