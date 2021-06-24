@@ -1,3 +1,7 @@
+To Kill Browser
+$ kill -9 $(lsof -t -i:3000)
+
+
 Reference : https://github.com/kunxin-chor/tgc12-mysql/blob/master/queries.sql
 
 mysql -u root 

@@ -5,6 +5,9 @@ const express = require('express');
 const hbs = require('hbs');
 const wax = require('wax-on');
 const mysql = require('mysql2/promise'); //yarn add mysql2 //do in command promppt
+const helpers = require('handlebars-helpers')({
+handlebars: hbs.handlebars
+});
 
 //create express app
 let app = express();
@@ -248,7 +251,83 @@ app.post('/actor/:actor_id/delete', async(req,res)=>{
     res.redirect('/')
 })
 
-// This for delete button 
+// // This for delete button 
+ app.get('/country/:country/delete', async(req,res) =>{
+    let [country] = await connection.execute(
+       "select * from country where country_id =?",
+       [req.params.country_id]
+    )
+    let targetCountry = country[0];
+    res.render('delete_country',{
+        'country': targetCountry
+     })
+
+ app.post('/country/:country_id/delete', async(req,res)=>{
+     let query = "delete from country where country_id=?"
+         await connection.execute(query,[req.params.country_id]);
+        res.redirect('/country')
+ })
+ }) // Need to check as it is not working 
+
+
+//create country 
+//city - type in // drop down for country 
+app.get('/city/create', async(req,res)=>{
+    let [city] = await connection.execute("select * from city");
+
+    res.render('create_city',{
+        'city':city
+    })
+})
+
+app.post('/city/create', async(req,res)=>{
+
+    let{ city
+    }= req.body;
+
+    let query =`
+    insert into city
+    (city)
+    values(?)
+    `
+    let bindings =[req.body.city];
+    console.log(bindings)
+    await connection.execute(query,bindings);
+    res.send("new city created");
+})
+
+//UPDATE A CITY 
+app.get('/city/:city_id/update',async(req,res)=>{  //c
+// retrieve city that user is updating 
+let query = 'select *from city where city_id=?';
+let bindings =[req.params.city_id];
+let [city] = await connection.execute(query, bindings); //c
+let targetCity = city[0]; //retrieve first item from array
+
+let [countries] = await connection.execute('select * from country order by country'); //c 
+
+res.render('update_city',{
+    'city':targetCity,
+    'countries':countries
+    })
+
+})//app.get city
+
+app.post('/city/:city_id/update', async(req,res)=>{
+let { city, country}= req.body;
+
+let query =`
+update city set city=?,
+country=?
+
+`
+// need to remember to put in where 
+let bindings =[city,country]
+
+await connection.execute(query,bindings);
+res.send("City has been updated")
+
+})
 
 
 
